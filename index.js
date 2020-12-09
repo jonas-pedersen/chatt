@@ -45,6 +45,6 @@ io.on('connection', (socket) => {
 
 
 // Anger vilken port som servern ska lyssna på. Skriver även ut den porten i terminalen.
-http.listen(3000, (port) => {
+http.listen(port, () => {
   console.log(`listening on *: ${port}`)
 })
