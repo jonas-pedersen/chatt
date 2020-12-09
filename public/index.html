@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+  <head>
+  
+    <title>Socket.IO chat</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 13px Helvetica, Arial; }
+      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+      form input { border: 0; padding: 10px; width: 90%; margin-right: 0.5%; }
+      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages li { padding: 5px 10px; }
+      #messages li:nth-child(odd) { background: #eee; }
+    </style>
+  </head>
+  <body>
+    
+    <ul id="messages"></ul>
+    <form id="formen"  action="">
+      <input id="m" autocomplete="off" /><button type="submit">Send</button>
+    </form>
+
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+     
+      $(document).ready(function() {
+        let socket = io()
+        let formEl = document.getElementById('formen')
+
+        formEl.addEventListener('submit', (e) => {
+          e.preventDefault()
+          
+          let message = formEl[0].value
+          // Skriver ut meddelandet i terminalen hos användare. Endast till för testning.
+          console.log(message)
+          // Emits 'chat message' to server
+          socket.emit('chat message', message)
+          message = ''
+          
+          return false
+        })
+
+        // Lyssnar på händelsen 'chat message' och 
+        // Skriver ut det meddelande på skärmen.
+        socket.on('chat message', (msg)  => {
+          $('#messages').append($('<li>').text(msg))
+        })
+
+        // Lyssnar på händelsen 'kopplat av' och skriver ut meddelande på skärmen
+        socket.on('kopplat av', (msg) => {
+          $('#messages').append($('<li>').text(msg))
+        })
+
+        // Lyssnar på händelsen 'kopplat upp'och skriver ut meddelande på skärmen
+        socket.on('kopplat upp', (msg) => {
+          $('#messages').append($('<li>').text(msg))
+        })
+
+      })
+
+
+
+
+    </script>
+  
+    
+  </body>
+</html>
